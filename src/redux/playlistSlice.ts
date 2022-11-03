@@ -13,9 +13,10 @@ export const playlistSlice = createSlice({
   initialState,
   reducers: {
     add: (state, action: PayloadAction<number>) => {state.value.push(action.payload)},
+    remove: (state, action: PayloadAction<number>) => {state.value.filter((e) => {e !== action.payload})} // ???
   },
 })
 
-export const { add } = playlistSlice.actions
+export const { add, remove } = playlistSlice.actions
 
 export default playlistSlice.reducer
