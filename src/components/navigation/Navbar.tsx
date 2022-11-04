@@ -1,15 +1,19 @@
 import * as React from 'react';
+import styled from "styled-components"
+import { Routes, Route } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 
-type Props = {
-  label: string;
-  count: number; // ???
-};
+export const Container = styled.div`
+  background-color: gray;
+`
 
-export const Navbar: React.FC<Props> = props => {
-  const { label, count } = props;
+
+export const Navbar: React.FC = props => {
 
   return (
-    <div>
-    </div>
+    <Container>
+      navbar
+      
+    </Container>
   );
 };

@@ -5,7 +5,7 @@ type Props = {
   count: number; // ???
 };
 
-export const General: React.FC<Props> = props => {
+export const Setting: React.FC<Props> = props => {
   const { label, count } = props;
 
   return (
