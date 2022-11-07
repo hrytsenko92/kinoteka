@@ -43,20 +43,17 @@ module.exports = {
        use: ["miniCssExtractPlugin.loader", "css-loader", "sass-loader"],
      },
      {
-       test: /\.(jpe?g|png|gif|mp3|svg)$/,
+       test: /\.(jpe?g|png|gif|mp3)$/,
        use: ["file-loader"],
      },
      {
-       test: /\.(csv)$/,
-       use: ["csv-loader"],
-     },
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      use: ['@svgr/webpack', 'file-loader'],
+    },
      {
        test: /\.(ttf|woff|woff2|eot)$/,
        use: ["file-loader"],
-     },
-     {
-       test: /\.(xml)$/,
-       use: ["xml-loader"],
      },
    ],
  },

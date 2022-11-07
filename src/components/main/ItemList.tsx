@@ -1,15 +1,15 @@
 import * as React from 'react';
 
 type Props = {
-  label: string;
-  count: number; // ???
+  itemLabel: string;
 };
 
-export const ItemList: React.FC<Props> = props => {
-  const { label, count } = props;
+export const ItemList: React.FC<Props> = ({itemLabel}:Props) => { 
+  // const { label, count } = props;
 
   return (
     <div>
+      {itemLabel}
     </div>
   );
 };

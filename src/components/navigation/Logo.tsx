@@ -1,16 +1,20 @@
 import * as React from 'react';
-import logoImg from "../../assets/logoImg.svg"
+import styled from "styled-components"
+import myLogo from "../../assets/logoImg.svg"
 
-type Props = {
-  label: string;
-  count: number; // ???
-};
+export const Container = styled.div`
+    width: 100px;
+    height: 100px;
+`
+export const myLogoSVG = styled.svg`
+  width: 100px;
+  height: 100px;
+`
 
-export const Logo: React.FC<Props> = props => {
-  const { label, count } = props;
-
+export const Logo: React.FC = props => {
   return (
-    <div>
-    </div>
+    <Container>
+      <img src={myLogo} alt="logo" />
+    </Container>
   );
 };

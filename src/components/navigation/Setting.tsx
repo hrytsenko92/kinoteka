@@ -1,15 +1,11 @@
 import * as React from 'react';
 
-type Props = {
-  label: string;
-  count: number; // ???
-};
 
-export const Setting: React.FC<Props> = props => {
-  const { label, count } = props;
+export const Setting: React.FC = props => {
 
   return (
     <div>
+      setting
     </div>
   );
 };
