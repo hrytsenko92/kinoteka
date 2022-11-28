@@ -1,7 +1,8 @@
 import React, {useState} from "react";
-import {useAppSelector, useAppDispatch} from "../redux/hook"
-import { add, remove } from "../redux/playlistSlice";
-import {RootState} from "../redux/store"
+import {useAppSelector, useAppDispatch} from "./src/redux/hook"
+import { add, remove } from "./src/redux/playlistSlice";
+import {RootState} from "./src/redux/store"
+// import m from "./src/assets/svg/svg"
 
 export const TestComponent: React.FC = ({}) => {
     const playlist = useAppSelector((state: RootState) => state.playlist.value)

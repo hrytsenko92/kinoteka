@@ -49,7 +49,7 @@ module.exports = {
      {
       test: /\.svg$/i,
       issuer: /\.[jt]sx?$/,
-      use: ['@svgr/webpack', 'file-loader'],
+      use: ['@svgr/webpack'],
     },
      {
        test: /\.(ttf|woff|woff2|eot)$/,

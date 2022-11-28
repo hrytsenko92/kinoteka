@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import  playlistSlice  from "./playlistSlice";
+import playlistSlice from "./playlistSlice";
 import langSlice from "./langSlice"
+import themeSlice from "./themeSlice"
 
 export const store = configureStore({
     reducer: {
         playlist: playlistSlice,
-        lang: langSlice
+        lang: langSlice,
+        theme: themeSlice
     }
 })
 

@@ -20,5 +20,5 @@
         "noEmit": false,
         "jsx": "react-jsx"
     },
-    "include": ["./src/**/*", "**/*.ts", "**/*.tsx", "custom.d.ts"]
+    "include": ["./src/**/*", "**/*.ts", "**/*.tsx", "./src/assets/svg/svg.d.ts"]
 }

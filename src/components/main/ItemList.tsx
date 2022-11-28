@@ -1,12 +1,11 @@
-import { ItemCard } from "./ItemCard";
-import {RootState} from "../../redux/store"
-import {useAppSelector} from "../../redux/hook"
 import React, { useEffect, useState } from "react";
-import axios, { AxiosResponse, AxiosError } from "axios";
-import { type } from "os";
+import styled from "styled-components";
+import { ItemCard } from "./ItemCard";
+import axios from "axios";
 
 type Props = {
   itemLabel: string;
+  language?: string;
 };
 type Welcome = {
   dates?: Dates;
@@ -14,11 +13,11 @@ type Welcome = {
   results?: Result[];
   total_pages?: number;
   total_results?: number;
-}
+};
 type Dates = {
   maximum?: Date;
   minimum?: Date;
-}
+};
 type Result = {
   adult?: boolean;
   backdrop_path?: string;
@@ -34,138 +33,69 @@ type Result = {
   video?: boolean;
   vote_average?: number;
   vote_count?: number;
-}
+};
 enum OriginalLanguage {
   De = "de",
   En = "en",
   Es = "es",
   Ja = "ja",
 }
-type genreType = {
-  id: number;
-  name: string;
-};
-type loadDiscoverType = {
-  sortByPopulAsc: string;
-  sortByPopulDes: string;
-  sortByReleaAsc: string;
-  sortByReleaDes: string;
-  sortByRevenAsc: string;
-  sortByRevenDes: string;
-  genre: genreType[];
-};
 const loadSectionURL: string = "https://api.themoviedb.org/3/";
 const ApiKey: string = "api_key=f7d6f68390c266c1854cab96343c8550";
 const lang: string = "language=";
-const sortBystr: string = "sort_by="
+const sortBystr: string = "sort_by=";
 const pagestr: string = "page=";
-const genresstr: string = "with_genres="
-const loadDiscover: loadDiscoverType = {
-  sortByPopulAsc: "popularity.asc",
-  sortByPopulDes: "popularity.desc",
-  sortByReleaAsc: "release_date.asc",
-  sortByReleaDes: "release_date.desc",
-  sortByRevenAsc: "revenue.asc",
-  sortByRevenDes: "revenue.desc",
-  genre: [
-    {
-      id: 28,
-      name: "Action",
-    },
-    {
-      id: 12,
-      name: "Adventure",
-    },
-    {
-      id: 16,
-      name: "Animation",
-    },
-    {
-      id: 35,
-      name: "Comedy",
-    },
-    {
-      id: 80,
-      name: "Crime",
-    },
-    {
-      id: 99,
-      name: "Documentary",
-    },
-    {
-      id: 18,
-      name: "Drama",
-    },
-    {
-      id: 10751,
-      name: "Family",
-    },
-    {
-      id: 14,
-      name: "Fantasy",
-    },
-    {
-      id: 36,
-      name: "History",
-    },
-    {
-      id: 27,
-      name: "Horror",
-    },
-    {
-      id: 10402,
-      name: "Music",
-    },
-    {
-      id: 9648,
-      name: "Mystery",
-    },
-    {
-      id: 10749,
-      name: "Romance",
-    },
-    {
-      id: 878,
-      name: "Science Fiction",
-    },
-    {
-      id: 10770,
-      name: "TV Movie",
-    },
-    {
-      id: 53,
-      name: "Thriller",
-    },
-    {
-      id: 10752,
-      name: "War",
-    },
-    {
-      id: 37,
-      name: "Western",
-    },
-  ],
-};
+const genresstr: string = "with_genres=";
 
-//   url: "https://api.themoviedb.org/3/discover/movie?api_key=f7d6f68390c266c1854cab96343c8550&language=en-US&sort_by=revenue.desc&page=1&with_genres=878",
-export const ItemList: React.FC<Props> = ({ itemLabel }: Props) => {
-  const appLang = useAppSelector((state: RootState) => state.lang.value)
-  const [sortBy, setSortBy] = useState<string> ("popularity.asc")
-  const [page, setPage] = useState<number>(1)
-  const [genres, setGenres] = useState<number>(80)
-  const [loading, setLoading] = useState(false);
+export const Container = styled.div`
+`
+export const SelectWrapper = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+`
+export const MovieWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
+`
+export const Oops = styled.div`
+display: flex;
+flex-flow: row nowrap;
+justify-content: flex-start;
+align-items: center;
+min-width: 100%;
+height: 100vh;
+`
+export const OopsMessage = styled.h1`
+margin-left: 200px;
+  font-size: 50px;
+`
+export const ItemList: React.FC<Props> = ({ itemLabel, language }: Props) => {
+  const [sortBy, setSortBy] = useState<string>("popularity.asc");
+  const [page, setPage] = useState<number>(1);
+  const [genres, setGenres] = useState<number>(80);
   const [moviedata, setMoviedata] = useState<Welcome | null>(null);
+  console.log(moviedata?.results);   // delete
+  const onChangeSort = (event: any) => {
+    const value = event.target.value;
+    setSortBy(value);
+  };
+  const onChangeGenre = (event: any) => {
+    const value = event.target.value;
+    setGenres(value);
+  };
   useEffect(() => {
-    let request: string
-    itemLabel === "discover/movie" ? request = `${loadSectionURL}${itemLabel}?${ApiKey}&${lang}${appLang}&${sortBystr}${sortBy}&${pagestr}${page}&${genresstr}${genres}`: request = `${loadSectionURL}${itemLabel}?${ApiKey}&${lang}${appLang}&${pagestr}${page}`
-    setLoading(true);
+    let request: string;
+    itemLabel === "discover/movie"
+      ? (request = `${loadSectionURL}${itemLabel}?${ApiKey}&${lang}${language}&${sortBystr}${sortBy}&${pagestr}${page}&${genresstr}${genres}`)
+      : (request = `${loadSectionURL}${itemLabel}?${ApiKey}&${lang}${language}&${pagestr}${page}`);
     async function getUsers() {
       try {
-        const { data, status } = await axios.get<Welcome>(request,{headers: {Accept: "application/json",},});
-        setMoviedata(data)
-        console.log(appLang)
-        // console.log(JSON.stringify(data, null, 4));
-        // console.log("response status is: ", status);
+        const { data, status } = await axios.get<Welcome>(request, {
+          headers: { Accept: "application/json" },
+        });
+        setMoviedata(data);
         return data;
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -178,13 +108,47 @@ export const ItemList: React.FC<Props> = ({ itemLabel }: Props) => {
       }
     }
     getUsers();
-    setLoading(false);
-   
-  }, []);
-  console.log(moviedata?.results)
-  
-  return <div>
-    {itemLabel}
-    {/* <div>{moviedata}</div> */}
-    </div>;
+  }, [language, itemLabel, sortBy, genres]);
+  return (
+    <Container>
+      {itemLabel === "discover/movie" ?<SelectWrapper>
+      <select name="sort" onChange={onChangeSort} required>
+          <option value="popularity.asc">Popularity ↑</option>
+          <option value="popularity.desc">Popularity ↓</option>
+          <option value="revenue.asc">Revenue ↑</option>
+          <option value="revenue.desc">Revenue ↓</option>
+          <option value="release_date.asc">Release ↑</option>
+          <option value="release_date.desc">Release ↓</option>
+        </select>
+      <select name="genre" onChange={onChangeGenre} required>
+          <option value="28">Action</option>
+          <option value="12">Adventure</option>
+          <option value="16">Animation</option>
+          <option value="35">Comedy</option>
+          <option value="80">Crime</option>
+          <option value="99">Documentary</option>
+          <option value="18">Drama</option>
+          <option value="10751">Family</option>
+          <option value="14">Fantasy</option>
+          <option value="36">History</option>
+          <option value="27">Horror</option>
+          <option value="10402">Music</option>
+          <option value="9648">Mystery</option>
+          <option value="10749">Romance</option>
+          <option value="878">Science Fiction</option>
+          <option value="10770">TV Movie</option>
+          <option value="53">Thriller</option>
+          <option value="10752">War</option>
+          <option value="37">Western</option>       
+        </select>
+      </SelectWrapper>: null }
+      {moviedata?.results !== undefined ? <MovieWrapper>
+        {moviedata?.results?.map((item) => (
+            <ItemCard res={item} key={item.id}/>
+        ))}
+      </MovieWrapper>: <Oops>
+        <OopsMessage>Oops something went wrong</OopsMessage>
+        </Oops>}
+    </Container>
+  );
 };

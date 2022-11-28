@@ -1,10 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
-// const langArr: string[] = ["en-US","ukr"]
-// type langType = {
-//   value: string
-// }
-// let initialState: string = "en-US";
 const initialState = { value: "en-US" }
 
 export const langSlice = createSlice({
