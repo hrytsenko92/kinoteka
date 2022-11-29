@@ -67,6 +67,7 @@ export const LinkItem = styled(Link)`
   font-size: 18px;
   font-weight: 700;
   &:hover {
+    transition: 50ms;
     color: ${(props) => props.theme.hoverBTN};
   }
 `;
@@ -124,7 +125,7 @@ export const Navbar: React.FC<Props> = ({ language }) => {
       setOffset(window.pageYOffset);
       window.pageYOffset === 0
         ? (boxShadowCheck = "none")
-        : (boxShadowCheck = "rgba(0,0,0,0.35) 0px 5px 15px");
+        : (boxShadowCheck = "rgba(0,0,0,0.5) 0px 5px 15px");
     };
   }, [offset]);
   return (

@@ -56,8 +56,10 @@ export const SelectWrapper = styled.div`
 `
 export const MovieWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: auto;
+  justify-content: center;
+  justify-items: center;
 `
 export const Oops = styled.div`
 display: flex;

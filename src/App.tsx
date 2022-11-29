@@ -16,6 +16,7 @@ const GlobalStyle = createGlobalStyle`
        url(${ExoItalic}) format('ttf');
 }
 * {
+    transition: 750ms;
     margin: 0;
     padding: 0;
     outline: 0;
@@ -26,7 +27,11 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
 }
 `;
-export const Container = styled.div``;
+export const Container = styled.div`
+display: flex;
+flex-flow: column nowrap; // delete all position to return to old style
+align-items: center;
+`;
 
 const App: React.FC = () => {
   const changeTheme = useAppSelector((state: RootState) => state.theme.value);
@@ -44,11 +49,10 @@ const App: React.FC = () => {
     <>
       <ThemeProvider theme={myTheme}>
         <GlobalStyle />
-        <Container style={{
-          backgroundColor: `${myTheme.background}`,
-        }}>
+        <Container style={{backgroundColor: `${myTheme.background}`,}}>
           <StickyBox
             style={{
+              width: "100%", // return to old style
               zIndex: 999,
               display: "flex",
               flexFlow: "row",
