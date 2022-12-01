@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import { ItemList } from "./ItemList";
 import { RootState } from "../../redux/store";
 import { useAppSelector } from "../../redux/hook";
+import { Watchlist } from "./Watchlist";
 
 export const Container = styled.div`
   position: relative;
@@ -43,8 +44,7 @@ export const Main: React.FC = (props) => {
           path="/discover"
           element={<ItemList itemLabel={loadSection[5]} language={appLang} />}
         />
-        <Route path="/watchlist" element={<ItemList itemLabel="watchlist" />} />
-        <Route path="/recent" element={<ItemList itemLabel="Recent page" />} />
+        <Route path="/watchlist" element={<Watchlist />} />
       </Routes>
     </Container>
   );

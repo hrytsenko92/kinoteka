@@ -1,51 +1,29 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { ItemCard } from "./ItemCard";
 import axios from "axios";
+import { ItemCardS } from "./ItemCardS";
+import { Welcome } from "./APITypes"
 
 type Props = {
   itemLabel: string;
   language?: string;
 };
-type Welcome = {
-  dates?: Dates;
-  page?: number;
-  results?: Result[];
-  total_pages?: number;
-  total_results?: number;
-};
-type Dates = {
-  maximum?: Date;
-  minimum?: Date;
-};
-type Result = {
-  adult?: boolean;
-  backdrop_path?: string;
-  genre_ids?: number[];
-  id?: number;
-  original_language?: OriginalLanguage;
-  original_title?: string;
-  overview?: string;
-  popularity?: number;
-  poster_path?: string;
-  release_date?: Date;
-  title?: string;
-  video?: boolean;
-  vote_average?: number;
-  vote_count?: number;
-};
-enum OriginalLanguage {
-  De = "de",
-  En = "en",
-  Es = "es",
-  Ja = "ja",
+interface optionsType {
+  loadSectionURL: string,
+  ApiKey: string,
+  lang: string,
+  sortBystr: string,
+  pagestr: string,
+  genresstr: string,
 }
-const loadSectionURL: string = "https://api.themoviedb.org/3/";
-const ApiKey: string = "api_key=f7d6f68390c266c1854cab96343c8550";
-const lang: string = "language=";
-const sortBystr: string = "sort_by=";
-const pagestr: string = "page=";
-const genresstr: string = "with_genres=";
+const options: optionsType = {
+  loadSectionURL: "https://api.themoviedb.org/3/",
+  ApiKey: "api_key=f7d6f68390c266c1854cab96343c8550",
+  lang: "language=",
+  sortBystr: "sort_by=",
+  pagestr: "page=",
+  genresstr: "with_genres=",
+}
 
 export const Container = styled.div`
 `
@@ -90,8 +68,8 @@ export const ItemList: React.FC<Props> = ({ itemLabel, language }: Props) => {
   useEffect(() => {
     let request: string;
     itemLabel === "discover/movie"
-      ? (request = `${loadSectionURL}${itemLabel}?${ApiKey}&${lang}${language}&${sortBystr}${sortBy}&${pagestr}${page}&${genresstr}${genres}`)
-      : (request = `${loadSectionURL}${itemLabel}?${ApiKey}&${lang}${language}&${pagestr}${page}`);
+      ? (request = `${options.loadSectionURL}${itemLabel}?${options.ApiKey}&${options.lang}${language}&${options.sortBystr}${sortBy}&${options.pagestr}${page}&${options.genresstr}${genres}`)
+      : (request = `${options.loadSectionURL}${itemLabel}?${options.ApiKey}&${options.lang}${language}&${options.pagestr}${page}`);
     async function getUsers() {
       try {
         const { data, status } = await axios.get<Welcome>(request, {
@@ -146,7 +124,7 @@ export const ItemList: React.FC<Props> = ({ itemLabel, language }: Props) => {
       </SelectWrapper>: null }
       {moviedata?.results !== undefined ? <MovieWrapper>
         {moviedata?.results?.map((item) => (
-            <ItemCard res={item} key={item.id}/>
+            <ItemCardS res={item} movieID={item.id} key={item.id}/>
         ))}
       </MovieWrapper>: <Oops>
         <OopsMessage>Oops something went wrong</OopsMessage>

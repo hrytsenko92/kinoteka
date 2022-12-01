@@ -125,7 +125,7 @@ export const Navbar: React.FC<Props> = ({ language }) => {
       setOffset(window.pageYOffset);
       window.pageYOffset === 0
         ? (boxShadowCheck = "none")
-        : (boxShadowCheck = "rgba(0,0,0,0.5) 0px 5px 15px");
+        : (boxShadowCheck = "0px 10px 25px rgba(0,0,0,.8)");
     };
   }, [offset]);
   return (
@@ -186,14 +186,6 @@ export const Navbar: React.FC<Props> = ({ language }) => {
             <LinkItem to="/watchlist">Watchlist</LinkItem>
           ) : (
             <LinkItem to="/watchlist">Збережене</LinkItem>
-          )}
-        </MenuItem>
-        <MenuItem>
-          <RecentSvg viewBox="0 0 122.88 108.12" />
-          {language === "en-US" ? (
-            <LinkItem to="/recent">Recent</LinkItem>
-          ) : (
-            <LinkItem to="/recent">Переглянуте</LinkItem>
           )}
         </MenuItem>
       </MenuWrapper>

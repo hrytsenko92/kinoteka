@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
        url(${ExoItalic}) format('ttf');
 }
 * {
-    transition: 750ms;
+    transition: 450ms;
     margin: 0;
     padding: 0;
     outline: 0;
