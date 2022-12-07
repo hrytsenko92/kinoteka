@@ -119,7 +119,6 @@ export const SettingWrapper = styled.div`
 
 export const Navbar: React.FC<Props> = ({ language }) => {
   const [offset, setOffset] = useState(0);
-  console.log(language);
   useEffect(() => {
     window.onscroll = () => {
       setOffset(window.pageYOffset);

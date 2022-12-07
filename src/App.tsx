@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAppSelector } from "./redux/hook";
 import { RootState } from "./redux/store";
+import { useLocation } from "react-router-dom";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, themeType } from "./assets/Theme.styled";
 import StickyBox from "react-sticky-box";
@@ -37,6 +38,7 @@ const App: React.FC = () => {
   const changeTheme = useAppSelector((state: RootState) => state.theme.value);
   const appLang = useAppSelector((state: RootState) => state.lang.value);
   const [myTheme, setMyTheme] = useState<themeType>(lightTheme);
+  const location = useLocation();
   useEffect(() => {
     const changeMyTheme = () => {
       return changeTheme === "lightTheme"

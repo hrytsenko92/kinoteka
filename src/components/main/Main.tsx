@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { Routes, Route } from "react-router-dom";
-import { ItemList } from "./ItemList";
+import { ItemList } from "./itemList/ItemList";
 import { RootState } from "../../redux/store";
 import { useAppSelector } from "../../redux/hook";
-import { Watchlist } from "./Watchlist";
+import { Watchlist } from "./watchlist/Watchlist";
+import { ItemCardL } from "./movieDetail/ItemCardL";
 
 export const Container = styled.div`
   position: relative;
@@ -44,7 +45,8 @@ export const Main: React.FC = (props) => {
           path="/discover"
           element={<ItemList itemLabel={loadSection[5]} language={appLang} />}
         />
-        <Route path="/watchlist" element={<Watchlist />} />
+        <Route path="/watchlist" element={<Watchlist language={appLang} />} />
+        <Route path="/detail" element={<ItemCardL language={appLang}  />} />
       </Routes>
     </Container>
   );

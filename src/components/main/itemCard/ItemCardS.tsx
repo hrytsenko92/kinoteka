@@ -1,16 +1,18 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import age from "../../assets/svg/age.svg";
-import medal from "../../assets/svg/medal.svg";
-import addSVG from "../../assets/svg/add.svg";
-import removeSVG from "../../assets/svg/remove.svg";
-import {useAppDispatch, useAppSelector} from "../../redux/hook"
-import { add, remove } from "../../redux/playlistSlice";
-import {RootState} from "../../redux/store"
-import { Result } from "./APITypes"
+import age from "../../../assets/svg/age.svg";
+import medal from "../../../assets/svg/medal.svg";
+import addSVG from "../../../assets/svg/add.svg";
+import removeSVG from "../../../assets/svg/remove.svg";
+import {useAppDispatch, useAppSelector} from "../../../redux/hook"
+import { add, remove } from "../../../redux/playlistSlice";
+import {RootState} from "../../../redux/store"
+import { Result } from "../../types/APITypes"
+
 type ItemInfo = {
   res: Result,
-  movieID: number
+  movieID?: number | undefined
 };
 export const Container = styled.div`
   display: grid;
@@ -119,7 +121,7 @@ export const OptionWrapper = styled.div`
   justify-content: start;
   align-items: center;
 `;
-export const OpenMovie = styled.button`   // change color
+export const OpenMovie = styled(Link)`   // change color
   width: 150px;
   height: 30px;
   font-size: 15px;
@@ -158,22 +160,26 @@ export const RemoveIMG = styled(removeSVG)` // change color
     }
 `;
 export const ItemCardS: React.FC<ItemInfo> = ({ res, movieID }) => {
-  const playlist = useAppSelector((state: RootState) => state.playlist.value)
+  // const playlist = useAppSelector((state: RootState) => state.playlist.value)
   const dispatch = useAppDispatch()
-  const handleAdd = () => {dispatch(add(movieID)) }
-  const handleRemove = () => {dispatch(remove(movieID)) }
+  // const handleAdd = () => {movieID !== undefined? dispatch(add(movieID)) : null}
+  const handleAdd = () => {res.id !== undefined? dispatch(add(res.id)) : null}
+  // const handleRemove = () => {movieID !== undefined? dispatch(remove(movieID)): null }
   const getPoster = (postpath: string | undefined) => {
     return `https://image.tmdb.org/t/p/w500/${postpath}`;
   };
+  const voteFix = (vote_average?: number | undefined) => {
+    return vote_average?.toFixed()
+  }
   return (
     <Container>
       <PosterWrapper>
         <Poster src={getPoster(res.poster_path)} alt=""></Poster>
         <PosterBlur />
       </PosterWrapper>
-      <Title>{playlist}</Title>
+      <Title>{res.title}</Title>
       <DetailWrapper>
-        <ReleaseDate>{res.id}</ReleaseDate>
+        <ReleaseDate>{voteFix()}</ReleaseDate>
         {res.adult === true ? <Adult viewBox="0 0 512 512" /> : null}
         <Vote>
           {`${res.vote_average}`}
@@ -184,9 +190,9 @@ export const ItemCardS: React.FC<ItemInfo> = ({ res, movieID }) => {
         <Description>{res.overview}</Description>
       </DescriptionWrap>
       <OptionWrapper>
-        <OpenMovie>Open</OpenMovie>
+        <OpenMovie to="/detail" state={{ movieID: res.id }}>Open</OpenMovie>
 <Add onClick={handleAdd}><AddIMG viewBox="0 0 91.5 122.88"/></Add>
-<Remove onClick={handleRemove}><RemoveIMG viewBox="0 0 91.5 122.88"/></Remove>
+{/* <Remove onClick={handleRemove}><RemoveIMG viewBox="0 0 91.5 122.88"/></Remove> */}
       </OptionWrapper>
     </Container>
   );
