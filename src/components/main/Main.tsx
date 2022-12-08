@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { Routes, Route } from "react-router-dom";
-import { ItemList } from "./itemList/ItemList";
-import { RootState } from "../../redux/store";
+import { ItemList } from "./ItemList";
+import { Watchlist } from "./Watchlist";
+import { Detail } from "./Detail";
 import { useAppSelector } from "../../redux/hook";
-import { Watchlist } from "./watchlist/Watchlist";
-import { ItemCardL } from "./movieDetail/ItemCardL";
+import { RootState } from "../../redux/store";
 
 export const Container = styled.div`
   position: relative;
@@ -20,33 +20,30 @@ const loadSection: string[] = [
   "movie/latest",
   "discover/movie",
 ];
-export const Main: React.FC = (props) => {
-  const appLang = useAppSelector((state: RootState) => state.lang.value);
+export const Main: React.FC = () => {
+  const playlist = useAppSelector((state: RootState) => state.playlist.value);
   return (
     <Container>
       <Routes>
-        <Route
-          path="/"
-          element={<ItemList itemLabel={loadSection[0]} language={appLang} />}
-        />
+        <Route path="/" element={<ItemList itemLabel={loadSection[0]} />} />
         <Route
           path="/popular"
-          element={<ItemList itemLabel={loadSection[1]} language={appLang} />}
+          element={<ItemList itemLabel={loadSection[1]} />}
         />
         <Route
           path="/top_rated"
-          element={<ItemList itemLabel={loadSection[2]} language={appLang} />}
+          element={<ItemList itemLabel={loadSection[2]} />}
         />
         <Route
           path="/upcoming"
-          element={<ItemList itemLabel={loadSection[3]} language={appLang} />}
+          element={<ItemList itemLabel={loadSection[3]} />}
         />
         <Route
           path="/discover"
-          element={<ItemList itemLabel={loadSection[5]} language={appLang} />}
+          element={<ItemList itemLabel={loadSection[5]} />}
         />
-        <Route path="/watchlist" element={<Watchlist language={appLang} />} />
-        <Route path="/detail" element={<ItemCardL language={appLang}  />} />
+        <Route path="/watchlist" element={<Watchlist playlistID={playlist} />} />
+        <Route path="/details/:id" element={<Detail />} />
       </Routes>
     </Container>
   );

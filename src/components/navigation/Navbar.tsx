@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { BtnLang } from "./BtnLang";
 import { BtnTheme } from "./BtnTheme";
 import MyLogo from "../../assets/svg/logoImg.svg";
@@ -57,7 +57,7 @@ export const MenuItem = styled.li`
   grid-template-rows: 1fr;
   column-gap: 5px;
 `;
-export const LinkItem = styled(Link)`
+export const LinkItem = styled(NavLink)`
   display: flex;
   flex-flow: row;
   justify-content: center;
@@ -182,9 +182,9 @@ export const Navbar: React.FC<Props> = ({ language }) => {
         <MenuItem>
           <WatchlistSvg viewBox="0 0 122.88 107.3" />
           {language === "en-US" ? (
-            <LinkItem to="/watchlist">Watchlist</LinkItem>
+            <LinkItem to="/watchlist" state={{active: true}}>Watchlist</LinkItem>
           ) : (
-            <LinkItem to="/watchlist">Збережене</LinkItem>
+            <LinkItem to="/watchlist" state={{active: true}}>Збережене</LinkItem>
           )}
         </MenuItem>
       </MenuWrapper>

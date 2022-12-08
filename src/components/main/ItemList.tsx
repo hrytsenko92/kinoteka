@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { ItemCardS } from "../itemCard/ItemCardS";
-import { Welcome, Result } from "../../types/APITypes";
+import { useAppSelector } from "../../redux/hook";
+import { RootState } from "../../redux/store";
+import { ItemCard } from "./ItemCard";
+import { Welcome, Result } from "../types/APITypes";
 import { DiscoverOptions } from "./DiscoverOptions";
 
 type Props = {
   itemLabel: string;
-  language: string;
+
 };
 interface optionsType {
   loadSectionURL: string;
@@ -50,7 +52,8 @@ export const OopsMessage = styled.h1`
   margin-left: 200px;
   font-size: 50px;
 `;
-export const ItemList: React.FC<Props> = ({ itemLabel, language }) => {
+export const ItemList: React.FC<Props> = ({ itemLabel }) => {
+  const language = useAppSelector((state: RootState) => state.lang.value);
   const [sortBy, setSortBy] = useState<string>("popularity.asc");
   const [genres, setGenres] = useState<number>(80);
   const [moviedata, setMoviedata] = useState<Result[]>([]);
@@ -73,7 +76,6 @@ export const ItemList: React.FC<Props> = ({ itemLabel, language }) => {
       ? (request = `${options.loadSectionURL}${itemLabel}?${options.ApiKey}&${options.lang}${language}&${options.sortBystr}${sortBy}&${options.pagestr}${page}&${options.genresstr}${genres}`)
       : (request = `${options.loadSectionURL}${itemLabel}?${options.ApiKey}&${options.lang}${language}&${options.pagestr}${page}`);
     async function getUsers() {
-      console.log("fetching start");
       try {
         const { data } = await axios.get<Welcome>(request, {
           headers: { Accept: "application/json" },
@@ -133,7 +135,7 @@ export const ItemList: React.FC<Props> = ({ itemLabel, language }) => {
       {moviedata !== undefined ? (
         <MovieWrapper>
           {moviedata.map((item) => (
-            <ItemCardS res={item} movieID={item.id} key={item.id} />
+            <ItemCard completeData={item} key={item.id} />
           ))}
         </MovieWrapper>
       ) : (
