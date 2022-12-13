@@ -1,27 +1,43 @@
 import React from "react";
 import styled from "styled-components";
-import { Link, useLocation } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../redux/hook";
-import { add, remove } from "../../redux/playlistSlice";
-import { RootState } from "../../redux/store";
+import { devices} from "../../assets/Theme.styled";
+import { useLocation } from "react-router-dom";
 import { ItemCard }from "./ItemCard"
-
 type Props = {
   playlistID: number[];
 };
-
 export const Container = styled.div`
   position: relative;
   left: 0;
-  top: 20px;
+  top: 15px;
   width: 100%;
+  height: 100vh;
 `;
 export const ListWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: auto;
-`;
+    display: grid;
 
+  @media ${devices.mobile} {
+    grid-template-columns: 1fr 1fr ;
+  }
+  @media ${devices.tablet} {
+    grid-template-columns: 1fr 1fr 1fr ;
+  }
+  @media ${devices.laptop} {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  @media ${devices.laptopL} {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
+  @media ${devices.desktop} {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr ;
+  }
+  grid-template-rows: auto;
+  justify-content: space-around;
+  justify-items: center;
+  align-items: center;
+  gap: 40px;
+  margin-top: 15px;
+`;
 export const Oops = styled.div`
   display: flex;
   flex-flow: row nowrap;
@@ -34,19 +50,8 @@ export const OopsMessage = styled.h1`
   margin-left: 200px;
   font-size: 50px;
 `;
-
 export const Watchlist: React.FC<Props> = ({ playlistID}) => {
   let location = useLocation()
-  // console.log(location.state.active)
-  // console.log(typeof location)
-  // const appLang = useAppSelector((state: RootState) => state.lang.value);
-  // const playlist = useAppSelector((state: RootState) => state.playlist.value);
-  // const [idList, setIdList] = useState<number[]>();
-  // const dispatch = useAppDispatch();
-  // const handleRemove = (id: number) => {
-  //   dispatch(remove(id));
-  // };
-
   return (
     <Container>
       {playlistID !== undefined ? (

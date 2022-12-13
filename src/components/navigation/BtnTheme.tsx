@@ -3,17 +3,17 @@ import styled from "styled-components";
 import Switch from "react-switch";
 import { useAppDispatch } from "../../redux/hook";
 import { togleLight, togleDark } from "../../redux/themeSlice";
-
 export const Container = styled.div`
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-evenly;
   margin: 5px;
+  white-space: nowrap;
 `;
 export const Details = styled.span`
   margin: 0 5px;
-`
+`;
 export const BtnTheme: React.FC = (props) => {
   const [checked, setChecked] = useState(false);
   const dispatch = useAppDispatch();
@@ -23,10 +23,13 @@ export const BtnTheme: React.FC = (props) => {
       ? dispatch(togleLight("lightTheme"))
       : dispatch(togleDark("darkTheme"));
   };
-
   return (
     <Container>
-      {checked === true ? <Details>Dark mode</Details> : <Details>Light mode</Details>}
+      {checked === true ? (
+        <Details>Dark mode</Details>
+      ) : (
+        <Details>Light mode</Details>
+      )}
       <Switch
         checked={checked}
         onChange={handleChangeLang}

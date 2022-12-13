@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { devices } from "../../assets/Theme.styled";
 import axios from "axios";
 import { useAppSelector } from "../../redux/hook";
 import { RootState } from "../../redux/store";
 import { ItemCard } from "./ItemCard";
 import { Welcome, Result } from "../types/APITypes";
-import { DiscoverOptions } from "./DiscoverOptions";
 
 type Props = {
   itemLabel: string;
-
 };
 interface optionsType {
   loadSectionURL: string;
@@ -33,12 +32,31 @@ export const SelectWrapper = styled.div`
   flex-flow: row nowrap;
   justify-content: space-around;
 `;
+export const Select = styled.select``;
+export const Option = styled.option``;
 export const MovieWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  @media ${devices.mobile} {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media ${devices.tablet} {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  @media ${devices.laptop} {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  @media ${devices.laptopL} {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
+  @media ${devices.desktop} {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  }
   grid-template-rows: auto;
-  justify-content: center;
+  justify-content: space-around;
   justify-items: center;
+  align-items: center;
+  gap: 40px;
+  margin-top: 15px;
 `;
 export const Oops = styled.div`
   display: flex;
@@ -53,40 +71,26 @@ export const OopsMessage = styled.h1`
   font-size: 50px;
 `;
 export const ItemList: React.FC<Props> = ({ itemLabel }) => {
-  const language = useAppSelector((state: RootState) => state.lang.value);
-  const [sortBy, setSortBy] = useState<string>("popularity.asc");
-  const [genres, setGenres] = useState<number>(80);
   const [moviedata, setMoviedata] = useState<Result[]>([]);
+  const appLang = useAppSelector((state: RootState) => state.lang.value);
   const [page, setPage] = useState<number>(1);
   const [fetching, setFetching] = useState<boolean>(true);
   const [label, setLabel] = useState<string>(itemLabel);
-  const [lang, setLang] = useState<string>(language);
+  const [lang, setLang] = useState<string>(appLang);
 
-  const onChangeSort: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
-    const value = e.currentTarget.value;
-    setSortBy(value);
-  };
-  const onChangeGenre: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
-    const value = e.currentTarget.value;
-    setGenres(Number(e.currentTarget.value));
-  };
   useEffect(() => {
-    let request: string;
-    itemLabel === "discover/movie"
-      ? (request = `${options.loadSectionURL}${itemLabel}?${options.ApiKey}&${options.lang}${language}&${options.sortBystr}${sortBy}&${options.pagestr}${page}&${options.genresstr}${genres}`)
-      : (request = `${options.loadSectionURL}${itemLabel}?${options.ApiKey}&${options.lang}${language}&${options.pagestr}${page}`);
+    let request: string = `${options.loadSectionURL}${itemLabel}?${options.ApiKey}&${options.lang}${appLang}&${options.pagestr}${page}`
     async function getUsers() {
       try {
         const { data } = await axios.get<Welcome>(request, {
           headers: { Accept: "application/json" },
         });
-        console.log(data.results);
         data.results !== undefined
           ? setMoviedata((moviedata) => [...moviedata, ...data.results])
           : null;
         setPage((prev) => prev + 1);
         setLabel(itemLabel);
-        setLang(language);
+        setLang(appLang);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.log("error message: ", error.message);
@@ -103,10 +107,10 @@ export const ItemList: React.FC<Props> = ({ itemLabel }) => {
     if (label !== itemLabel) {
       setMoviedata([]), setPage(0), getUsers();
     }
-    if (lang !== language) {
+    if (lang !== appLang) {
       setMoviedata([]), setPage(0), getUsers();
     }
-  }, [fetching, itemLabel, language]);
+  }, [fetching, itemLabel, appLang]);
   useEffect(() => {
     document.addEventListener("scroll", scrollHandler);
     return function () {
@@ -124,14 +128,6 @@ export const ItemList: React.FC<Props> = ({ itemLabel }) => {
   };
   return (
     <Container>
-      {itemLabel === "discover/movie" ? (
-        <SelectWrapper>
-          <DiscoverOptions
-            onChangeSort={onChangeSort}
-            onChangeGenre={onChangeGenre}
-          />
-        </SelectWrapper>
-      ) : null}
       {moviedata !== undefined ? (
         <MovieWrapper>
           {moviedata.map((item) => (

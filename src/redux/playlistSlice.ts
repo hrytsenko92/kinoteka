@@ -1,16 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
-
-
 export type listState = {
   value: number[];
 }
-
 const initialState: listState = {
   value: [],
 };
-
-
 export const playlistSlice = createSlice({
   name: "playlist",
   initialState,
@@ -19,7 +13,5 @@ export const playlistSlice = createSlice({
     remove: (state, action: PayloadAction<number>) => {state.value = state.value.filter((item)=>item !== action.payload), console.log(state)} 
   },
 })
-
 export const { add, remove } = playlistSlice.actions
-
 export default playlistSlice.reducer

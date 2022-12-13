@@ -4,147 +4,370 @@ import axios from "axios";
 import { useAppSelector } from "../../redux/hook";
 import { RootState } from "../../redux/store";
 import styled from "styled-components";
+import { devices} from "../../assets/Theme.styled";
 import { MovieDetail } from "../types/MovieDetails";
-import { Video } from "../types/Video";
+import { Video, Result as VideoResult } from "../types/Video";
 import { Result } from "../types/APITypes";
 import { Cast, CastElement } from "../types/Cast";
 import { ItemCard } from "./ItemCard";
+import timeSVG from "../../assets/svg/time.svg";
+import medal from "../../assets/svg/medal.svg";
+import transfer from "../../assets/svg/transfer.svg"
 
-type Props = {
-  language?: string;
-};
-
-const CardContainer = styled.div`
+const DetailContainer = styled.div`
   position: relative;
   left: 0;
-  top: 20px;
+  top: 15px;
   width: 100%;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
+  color: white;
 `;
-const BackgroundWrapper = styled.div`
+const BigCardWrapper = styled.div`
   position: relative;
-  width: 94%;
+  width: 100%;
   height: 600px;
   box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
-  border-radius: 7px;
+  border-radius: 15px;
   overflow: hidden;
-
   &:hover {
     transition: 100ms;
     box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
   }
 `;
-const BackgroundIMG = styled.div`
+const BigCardIMG = styled.div`
   z-index: 20;
-  filter: blur(5px);
+  filter: brightness(40%);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: left top;
+  height: 100%;
 `;
-const MovieWrapper = styled.div`
+const MovieContainer = styled.div`
   position: absolute;
   left: 0px;
   top: 0px;
   z-index: 25;
-  height: 100%;
   width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  grid-template-rows: 1fr;
 `;
-
-const PosterWrapper = styled.div`
+const MovieWrapper = styled.div`
+  display: grid;
+  grid-template-columns: auto 3fr;
+  grid-template-rows: 1fr;
+  margin: 50px;
+  gap: 50px;
+  
+`;
+const PosterIMG = styled.div`
   grid-column: 1/2;
   grid-row: 1/2;
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.3);
+  height: 500px;
+  width: auto;
+  aspect-ratio: 1/1.5;
+  border-radius: 15px;
+  overflow: hidden;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+`;
+const DetailInfo = styled.div`
+  grid-column: 2/3;
+  grid-row: 1/2;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto auto;
+`;
+const TitleWrapper = styled.div`
+  grid-column: 1/5;
+  grid-row: 1/2;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 2fr 1fr;
+  column-gap: 25px;
+`;
+const MovieTitle = styled.div`
+  grid-column: 1/2;
+  grid-row: 1/2;
+  font-size: 40px;
+  font-weight: 700;
+`;
+const Year = styled.div`
+  grid-column: 2/3;
+  grid-row: 1/2;
+  font-size: 40px;
+  font-weight: 400;
+`;
+const MovieSlogan = styled.div`
+  grid-column: 1/3;
+  grid-row: 2/3;
+  font-size: 20px;
+  font-weight: 500;
+`;
+const RateAndTimeWrapper = styled.div`
+  grid-column: 1/5;
+  grid-row: 2/3;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+`;
+const Rate = styled.div`
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
+  font-size: 20px;
+  margin: 15px;
 `;
-const PosterIMG = styled.img`
-  width: 100%;
-  height: auto;
-  object-position: center;
-  margin: 50px;
-  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.3);
-  border-radius: 7px;
+const RateIMG = styled(medal)`
+  width: 20px;
+  height: 20px;
+`;
+const Time = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+`;
+const TimeIMG = styled(timeSVG)`
+  width: 20px;
+  height: 20px;
+  fill: #FAB62D;
+  margin-right: 5px;
+`;
+const Overview = styled.div`
+  grid-column: 1/5;
+  grid-row: 3/4;
+  max-height: 120px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 18px;
+  line-height: 30px;
+`;
+const CastWrapper = styled.div`
+  grid-column: 1/5;
+  grid-row: 4/5;
+  align-self: flex-end;
+  display: grid;
+  @media ${devices.mobile} {
+    grid-template-columns: 1fr 1fr 1fr; // 3
+  }
+  @media ${devices.tablet} {
+    grid-template-columns: 1fr 1fr 1fr 1fr; // 4
+  }
+  @media ${devices.laptop} {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr; // 7
+  }
+  @media ${devices.laptopL} {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; // 8
+  }
+  @media ${devices.desktop} {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; // 9
+  }
+  grid-template-rows: 1fr;
+  justify-content: space-around;
+  align-items: center;
+`;
+const ActorCard1 = styled.div`
+  position: relative;
+  border-radius: 5px;
   overflow: hidden;
 `;
-
-const DetailInfo = styled.div`
-  grid-column: 2/3;
-  grid-row: 1/2;
+const ActorCard2 = styled.div`
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
 `;
-const TitleWrapper = styled.div``;
-const MovieTitle = styled.div``;
-const MovieSlogan = styled.div``;
-
-const YearRateAndTimeWrapper = styled.div``;
-const Year = styled.div``;
-const Rate = styled.div``;
-const Time = styled.div``;
-
-const Overview = styled.div``;
-
-const CastWrapper = styled.div`
-display: grid;
-grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-grid-template-rows: 1fr;
-justify-content: space-around;
-align-items: center;
+const ActorCard3 = styled.div`
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
 `;
-
-const ActorCard = styled.div`
-position: relative;
+const ActorCard4 = styled.div`
+   position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+  display: none;
+  @media (${devices.tablet}) {
+    display: block;
+  }
+`;
+const ActorCard5 = styled.div`
+   position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+  display: none;
+  @media (${devices.laptop}) {
+    display: block;
+  }
+`;
+const ActorCard6 = styled.div`
+   position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+  display: none;
+  @media (${devices.laptop}) {
+    display: block;
+  }
+`;
+const ActorCard7 = styled.div`
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+  display: none;
+  @media (${devices.laptop}) {
+    display: block;
+  }
+`;
+const ActorCard8 = styled.div`
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+  display: none;
+  @media (${devices.laptopL}) {
+    display: block;
+  }
+`;
+const ActorCard9 = styled.div`
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+  display: none;
+  @media (${devices.desktop}) {
+    display: block;
+  }
 `;
 const ActorPhoto = styled.img`
-width: 110px;
+  width: 110px;
+  border-radius: 5px;
+  overflow: hidden;
+`;
+const ActorNameBackground = styled.div`
+  background-color: white;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100px;
+  height: 15px;
+  margin: 0 5px 5px;
+  border-radius: 5px;
+  opacity: 0.6;
 `;
 const ActorName = styled.div`
-position: absolute;
-left: 0;
-bottom: 0;
-width: 100px;
-height: 40px;
-padding: 0px 5px;
-color: black;
-text-align: center;
+  text-align: center;
+  color: black;
+  font-size: 11px;
 `;
-
-const Other = styled.div`
-  margin-top: 50px;
+const OtherWrapper = styled.div`
+  width: 100%;
 `;
-const ToggleCheck = styled.button``;
+const ToggleCheckWrapper = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  margin: 25px;
+`
+const ToggleCheck= styled.button`
+  margin: 20px;
+  width: 130px;
+  height: 40px;
+  color: #fff;
+  border: none;
+  color: #000;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-weight: 500;
+  background: transparent;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+    7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+  outline: none;
+  &:after {
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 100%;
+    top: 0;
+    left: 0;
+    direction: rtl;
+    z-index: 50;
+    box-shadow: -7px -7px 20px 0px #fff9, -4px -4px 5px 0px #fff9,
+      7px 7px 20px 0px #0002, 4px 4px 5px 0px #0001;
+    transition: all 0.3s ease;
+  }
+  &:hover {
+    color: #000;
+  }
+  &:hover:after {
+    left: auto;
+    right: 0;
+    width: 100%;
+  }
+  &:active {
+    top: 2px;
+  }
+`;
+const ToggleCheckIMG = styled(transfer)`
+  width: 35px;
+  height: 35px;
+  fill: ${(props) => props.theme.iconColor};
+`;
 const SimilarMovieWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+    display: grid;
+  @media ${devices.mobile} {
+    grid-template-columns: 1fr 1fr ;
+  }
+  @media ${devices.tablet} {
+    grid-template-columns: 1fr 1fr 1fr ;
+  }
+  @media ${devices.laptop} {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  @media ${devices.laptopL} {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
+  @media ${devices.desktop} {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr ;
+  }
+  
   grid-template-rows: auto;
+  justify-content: space-around;
+  justify-items: center;
+  align-items: center;
+  gap: 40px;
 `;
 const YouTube = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto;
-  gap: 25px;
+display: flex;
+flex-flow: row nowrap;
+justify-content: center;
+align-items: center;
 `;
 const YoutubeItem = styled.iframe`
-  width: 600px;
-  height: 400px;
+  width: 800px;
+  height: 480px;
 `;
-
-export const Detail: React.FC<Props> = ({}) => {
+export const Detail: React.FC = () => {
   const appLang = useAppSelector((state: RootState) => state.lang.value);
   const location = useLocation();
   const movieNumber: number = location.state.movieNumber;
   const [moviedata, setMoviedata] = useState<MovieDetail>();
   const [cast, setCast] = useState<CastElement[]>();
-  const [video, setVideo] = useState<Video>();
+  const [video, setVideo] = useState<VideoResult>();
   const [similar, setSimilar] = useState<Result[]>([]);
   const [otherBTN, setOtherBTN] = useState<boolean>(true);
-
   const toggleCheck = () => {
     setOtherBTN((current) => !current);
   };
   const getPoster = (poster: string | undefined) => {
-    // винести в віддільний компонент
     return `https://image.tmdb.org/t/p/w500${poster}`;
   };
   const getBackdropPath = (backdrop: string | undefined) => {
@@ -152,6 +375,11 @@ export const Detail: React.FC<Props> = ({}) => {
   };
   const getPhoto = (profile_path: string | null) => {
     return `https://image.tmdb.org/t/p/w200${profile_path}`;
+  };
+  const getDate = () => {
+    return moviedata?.release_date !== undefined
+      ? moviedata.release_date.slice(0, 4)
+      : null;
   };
   const voteFix = () => {
     return moviedata?.vote_average.toFixed(1);
@@ -163,9 +391,7 @@ export const Detail: React.FC<Props> = ({}) => {
       return `${hours}h${minutes > 0 ? ` ${minutes}m` : ""}`;
     }
   };
-
   useEffect(() => {
-    // винести з компонента
     let request: string = `https://api.themoviedb.org/3/movie/${movieNumber}?api_key=f7d6f68390c266c1854cab96343c8550&language=${appLang}`;
     async function getUsers() {
       try {
@@ -184,8 +410,7 @@ export const Detail: React.FC<Props> = ({}) => {
       }
     }
     getUsers();
-  }, [appLang]);
-
+  }, [appLang, movieNumber]);
   useEffect(() => {
     let request: string = `https://api.themoviedb.org/3/movie/${movieNumber}/credits?api_key=f7d6f68390c266c1854cab96343c8550&language=${appLang}`;
     async function getCast() {
@@ -193,7 +418,7 @@ export const Detail: React.FC<Props> = ({}) => {
         const { data } = await axios.get<Cast>(request, {
           headers: { Accept: "application/json" },
         });
-        setCast(data.cast.slice(0, 10));
+        setCast(data.cast.slice(0, 20));
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.log("error message: ", error.message);
@@ -205,17 +430,15 @@ export const Detail: React.FC<Props> = ({}) => {
       }
     }
     getCast();
-  }, [appLang]);
-
+  }, [appLang, movieNumber]);
   useEffect(() => {
-    // винести з компонента
     let request: string = `https://api.themoviedb.org/3/movie/${movieNumber}/videos?api_key=f7d6f68390c266c1854cab96343c8550&language=${appLang}`;
     async function getVideo() {
       try {
         const { data } = await axios.get<Video>(request, {
           headers: { Accept: "application/json" },
         });
-        setVideo(data);
+        setVideo(data.results[0]);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.log("error message: ", error.message);
@@ -227,10 +450,8 @@ export const Detail: React.FC<Props> = ({}) => {
       }
     }
     getVideo();
-  }, [appLang]);
-
+  }, [appLang, movieNumber]);
   useEffect(() => {
-    // винести з компонента
     let request: string = `https://api.themoviedb.org/3/movie/${movieNumber}/similar?api_key=f7d6f68390c266c1854cab96343c8550&language=${appLang}&page=1`;
     async function getSimilar() {
       try {
@@ -249,71 +470,147 @@ export const Detail: React.FC<Props> = ({}) => {
       }
     }
     getSimilar();
-  }, [appLang]);
-console.log(cast)
+  }, [appLang, movieNumber, moviedata]);
   return (
-    <CardContainer>
-      <BackgroundWrapper>
-        <BackgroundIMG
-          style={{
-            backgroundImage: `url(${getBackdropPath(
-              moviedata?.backdrop_path
-            )})`,
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "left top",
-            height: "100%",
-            opacity: 0.9,
-          }}
-        />
-        <MovieWrapper>
-          <PosterWrapper>
-            <PosterIMG src={getPoster(moviedata?.poster_path)} />
-          </PosterWrapper>
-          <DetailInfo>
-            <TitleWrapper>
-              <MovieTitle>{moviedata?.title}</MovieTitle>
-              <MovieSlogan>{moviedata?.tagline}</MovieSlogan>
-            </TitleWrapper>
-            <YearRateAndTimeWrapper>
-              <Year>{moviedata?.release_date}</Year>
-              <Rate>{voteFix()}</Rate>
-              <Time>{toHoursAndMinutes()}</Time>
-            </YearRateAndTimeWrapper>
-            <Overview>{moviedata?.overview}</Overview>
-            <CastWrapper>
-              <ActorCard>
-                <ActorPhoto src={getPhoto(cast !== undefined ? cast[0].profile_path: null)}/>
-                <ActorName>{cast !== undefined ? cast[0].name: null}</ActorName>
-              </ActorCard>
-              <ActorCard>
-                <ActorPhoto src={getPhoto(cast !== undefined ? cast[1].profile_path: null)}/>
-                <ActorName>{cast !== undefined ? cast[1].name: null}</ActorName>
-              </ActorCard>
-              <ActorCard>
-                <ActorPhoto src={getPhoto(cast !== undefined ? cast[2].profile_path: null)}/>
-                <ActorName>{cast !== undefined ? cast[2].name: null}</ActorName>
-              </ActorCard>
-              <ActorCard>
-                <ActorPhoto src={getPhoto(cast !== undefined ? cast[3].profile_path: null)}/>
-                <ActorName>{cast !== undefined ? cast[3].name: null}</ActorName>
-              </ActorCard>
-              <ActorCard>
-                <ActorPhoto src={getPhoto(cast !== undefined ? cast[4].profile_path: null)}/>
-                <ActorName>{cast !== undefined ? cast[4].name: null}</ActorName>
-              </ActorCard>
-
-            </CastWrapper>
-          </DetailInfo>
-        </MovieWrapper>
-      </BackgroundWrapper>
-
-      <Other>
-        {appLang == "uk" ? (
-          <ToggleCheck onClick={toggleCheck}> змінити компонент</ToggleCheck>
-        ) : (
-          <ToggleCheck onClick={toggleCheck}> change</ToggleCheck>
-        )}
+    <DetailContainer>
+      <BigCardWrapper>
+        <BigCardIMG style={{ backgroundImage: `url(${getBackdropPath( moviedata?.backdrop_path )})`, }}/>
+        <MovieContainer>
+          <MovieWrapper>
+            <PosterIMG style={{ backgroundImage: `url(${getPoster(moviedata?.poster_path)})`,}} />
+            <DetailInfo>
+              <TitleWrapper>
+                <MovieTitle>{moviedata?.title}</MovieTitle>
+                <Year>({getDate()})</Year>
+                <MovieSlogan>{moviedata?.tagline}</MovieSlogan>
+              </TitleWrapper>
+              <RateAndTimeWrapper>
+                <Time>
+                  <TimeIMG viewBox="0 0 465.2 465.2" /> {toHoursAndMinutes()}
+                </Time>
+                <Rate>
+                  <RateIMG /> {voteFix()}
+                </Rate>
+              </RateAndTimeWrapper>
+              <Overview>{moviedata?.overview}</Overview>
+              <CastWrapper>
+                <ActorCard1>
+                  <ActorPhoto
+                    src={getPhoto(
+                      cast !== undefined ? cast[0].profile_path : null
+                    )}
+                  />
+                  <ActorNameBackground>
+                    <ActorName>
+                      {cast !== undefined ? cast[0].name : null}
+                    </ActorName>
+                  </ActorNameBackground>
+                </ActorCard1>
+                <ActorCard2>
+                  <ActorPhoto
+                    src={getPhoto(
+                      cast !== undefined ? cast[1].profile_path : null
+                    )}
+                  />
+                  <ActorNameBackground>
+                    <ActorName>
+                      {cast !== undefined ? cast[1].name : null}
+                    </ActorName>
+                  </ActorNameBackground>
+                </ActorCard2>
+                <ActorCard3>
+                  <ActorPhoto
+                    src={getPhoto(
+                      cast !== undefined ? cast[2].profile_path : null
+                    )}
+                  />
+                  <ActorNameBackground>
+                    <ActorName>
+                      {cast !== undefined ? cast[2].name : null}
+                    </ActorName>
+                  </ActorNameBackground>
+                </ActorCard3>
+                <ActorCard4>
+                  <ActorPhoto
+                    src={getPhoto(
+                      cast !== undefined ? cast[3].profile_path : null
+                    )}
+                  />
+                  <ActorNameBackground>
+                    <ActorName>
+                      {cast !== undefined ? cast[3].name : null}
+                    </ActorName>
+                  </ActorNameBackground>
+                </ActorCard4>
+                <ActorCard5>
+                  <ActorPhoto
+                    src={getPhoto(
+                      cast !== undefined ? cast[4].profile_path : null
+                    )}
+                  />
+                  <ActorNameBackground>
+                    <ActorName>
+                      {cast !== undefined ? cast[4].name : null}
+                    </ActorName>
+                  </ActorNameBackground>
+                </ActorCard5>
+                <ActorCard6>
+                  <ActorPhoto
+                    src={getPhoto(
+                      cast !== undefined ? cast[5].profile_path : null
+                    )}
+                  />
+                  <ActorNameBackground>
+                    <ActorName>
+                      {cast !== undefined ? cast[5].name : null}
+                    </ActorName>
+                  </ActorNameBackground>
+                </ActorCard6>
+                <ActorCard7>
+                  <ActorPhoto
+                    src={getPhoto(
+                      cast !== undefined ? cast[6].profile_path : null
+                    )}
+                  />
+                  <ActorNameBackground>
+                    <ActorName>
+                      {cast !== undefined ? cast[6].name : null}
+                    </ActorName>
+                  </ActorNameBackground>
+                </ActorCard7>
+                <ActorCard8>
+                  <ActorPhoto
+                    src={getPhoto(
+                      cast !== undefined ? cast[7].profile_path : null
+                    )}
+                  />
+                  <ActorNameBackground>
+                    <ActorName>
+                      {cast !== undefined ? cast[7].name : null}
+                    </ActorName>
+                  </ActorNameBackground>
+                </ActorCard8>
+                <ActorCard9>
+                  <ActorPhoto
+                    src={getPhoto(
+                      cast !== undefined ? cast[8].profile_path : null
+                    )}
+                  />
+                  <ActorNameBackground>
+                    <ActorName>
+                      {cast !== undefined ? cast[8].name : null}
+                    </ActorName>
+                  </ActorNameBackground>
+                </ActorCard9>
+              </CastWrapper>
+            </DetailInfo>
+          </MovieWrapper>
+        </MovieContainer>
+      </BigCardWrapper>
+      <OtherWrapper>
+        <ToggleCheckWrapper>
+        <ToggleCheck onClick={toggleCheck}><ToggleCheckIMG viewBox="0 0 122.88 101.78"/></ToggleCheck>
+        </ToggleCheckWrapper>
         {otherBTN ? (
           <SimilarMovieWrapper>
             {similar.map((item) => (
@@ -322,18 +619,15 @@ console.log(cast)
           </SimilarMovieWrapper>
         ) : (
           <YouTube>
-            {video?.results.map((item) => (
-              <YoutubeItem
-                key={item.id}
-                src={`https://www.youtube.com/embed/${item.key}`}
-                title="YouTube video player"
-                allowFullScreen
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              />
-            ))}
+            <YoutubeItem
+              src={`https://www.youtube.com/embed/${video?.key}`}
+              title="YouTube video player"
+              allowFullScreen
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            />
           </YouTube>
         )}
-      </Other>
-    </CardContainer>
+      </OtherWrapper>
+    </DetailContainer>
   );
 };

@@ -3,17 +3,17 @@ import styled from "styled-components";
 import Switch from "react-switch";
 import { useAppDispatch } from "../../redux/hook";
 import { togleUS, togleUKR } from "../../redux/langSlice";
-
 export const Container = styled.div`
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: flex-end;
   margin: 5px;
+  white-space: nowrap;
 `;
 export const Details = styled.span`
   margin: 0 5px;
-`
+`;
 export const BtnLang: React.FC = (props) => {
   const [checked, setChecked] = useState(false);
   const dispatch = useAppDispatch();
@@ -24,7 +24,11 @@ export const BtnLang: React.FC = (props) => {
   };
   return (
     <Container>
-      {checked === false ? <Details>English</Details>: <Details>Ukrainian</Details>}
+      {checked === false ? (
+        <Details>English</Details>
+      ) : (
+        <Details>Ukrainian</Details>
+      )}
       <Switch
         checked={checked}
         onChange={handleChangeLang}

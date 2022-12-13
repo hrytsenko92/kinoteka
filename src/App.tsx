@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useAppSelector } from "./redux/hook";
 import { RootState } from "./redux/store";
-import { useLocation } from "react-router-dom";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme, themeType } from "./assets/Theme.styled";
+import {
+  lightTheme,
+  darkTheme,
+  themeType,
+} from "./assets/Theme.styled";
 import StickyBox from "react-sticky-box";
 import Exo from "./assets/Exo_2/Exo2-VariableFont_wght.ttf";
 import ExoItalic from "./assets/Exo_2/Exo2-Italic-VariableFont_wght.ttf";
@@ -29,16 +32,17 @@ const GlobalStyle = createGlobalStyle`
 }
 `;
 export const Container = styled.div`
-display: flex;
-flex-flow: column nowrap; // delete all position to return to old style
-align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 `;
 
 const App: React.FC = () => {
   const changeTheme = useAppSelector((state: RootState) => state.theme.value);
   const appLang = useAppSelector((state: RootState) => state.lang.value);
   const [myTheme, setMyTheme] = useState<themeType>(lightTheme);
-  const location = useLocation();
   useEffect(() => {
     const changeMyTheme = () => {
       return changeTheme === "lightTheme"
@@ -51,16 +55,16 @@ const App: React.FC = () => {
     <>
       <ThemeProvider theme={myTheme}>
         <GlobalStyle />
-        <Container style={{backgroundColor: `${myTheme.background}`,}}>
+        <Container style={{ backgroundColor: `${myTheme.background}` }}>
           <StickyBox
             style={{
-              width: "100%", // return to old style
+              width: "100vw",
               zIndex: 999,
               display: "flex",
               flexFlow: "row",
               justifyContent: "center",
             }}
-            offsetTop={20}
+            offsetTop={15}
             offsetBottom={0}
           >
             <Navbar language={appLang} />
