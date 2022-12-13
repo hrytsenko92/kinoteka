@@ -13,6 +13,8 @@ import { ItemCard } from "./ItemCard";
 import timeSVG from "../../assets/svg/time.svg";
 import medal from "../../assets/svg/medal.svg";
 import transfer from "../../assets/svg/transfer.svg"
+import toVideo from "../../assets/svg/toVideo.svg"
+import toList from "../../assets/svg/toList.svg"
 
 const DetailContainer = styled.div`
   position: relative;
@@ -83,9 +85,9 @@ const TitleWrapper = styled.div`
   grid-column: 1/5;
   grid-row: 1/2;
   display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: 2fr 1fr;
-  column-gap: 25px;
+  gap: 15px;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto;
 `;
 const MovieTitle = styled.div`
   grid-column: 1/2;
@@ -93,14 +95,8 @@ const MovieTitle = styled.div`
   font-size: 40px;
   font-weight: 700;
 `;
-const Year = styled.div`
-  grid-column: 2/3;
-  grid-row: 1/2;
-  font-size: 40px;
-  font-weight: 400;
-`;
 const MovieSlogan = styled.div`
-  grid-column: 1/3;
+  grid-column: 1/2;
   grid-row: 2/3;
   font-size: 20px;
   font-weight: 500;
@@ -112,6 +108,12 @@ const RateAndTimeWrapper = styled.div`
   flex-flow: row nowrap;
   justify-content: flex-start;
   align-items: center;
+  gap: 25px;
+`;
+const Year = styled.div`
+  font-size: 25px;
+  font-weight: 400;
+  color: #FAB62D;
 `;
 const Rate = styled.div`
   display: flex;
@@ -119,11 +121,11 @@ const Rate = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 20px;
-  margin: 15px;
 `;
 const RateIMG = styled(medal)`
   width: 20px;
   height: 20px;
+  margin-right: 5px;
 `;
 const Time = styled.div`
   display: flex;
@@ -144,12 +146,13 @@ const Overview = styled.div`
   max-height: 120px;
   text-overflow: ellipsis;
   overflow: hidden;
-  font-size: 18px;
+  font-size: 21px;
   line-height: 30px;
 `;
 const CastWrapper = styled.div`
   grid-column: 1/5;
   grid-row: 4/5;
+  margin-top: 15px;
   align-self: flex-end;
   display: grid;
   @media ${devices.mobile} {
@@ -245,21 +248,26 @@ const ActorPhoto = styled.img`
   border-radius: 5px;
   overflow: hidden;
 `;
-const ActorNameBackground = styled.div`
+const ActorNameBackground = styled.div` ///   fs, fw
   background-color: white;
   position: absolute;
   left: 0;
   bottom: 0;
   width: 100px;
-  height: 15px;
+  height: 30px;
   margin: 0 5px 5px;
   border-radius: 5px;
   opacity: 0.6;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
 `;
 const ActorName = styled.div`
   text-align: center;
+  word-wrap: break-word;
   color: black;
-  font-size: 11px;
+  font-size: 13px;
 `;
 const OtherWrapper = styled.div`
   width: 100%;
@@ -273,8 +281,8 @@ const ToggleCheckWrapper = styled.div`
 `
 const ToggleCheck= styled.button`
   margin: 20px;
-  width: 130px;
-  height: 40px;
+  width: 100px;
+  height: 50px;
   color: #fff;
   border: none;
   color: #000;
@@ -316,7 +324,12 @@ const ToggleCheck= styled.button`
     top: 2px;
   }
 `;
-const ToggleCheckIMG = styled(transfer)`
+const ToggleToVideo = styled(toVideo)`
+  width: 35px;
+  height: 35px;
+  fill: ${(props) => props.theme.iconColor};
+`;
+const ToggleToList = styled(toList)`
   width: 35px;
   height: 35px;
   fill: ${(props) => props.theme.iconColor};
@@ -410,6 +423,7 @@ export const Detail: React.FC = () => {
       }
     }
     getUsers();
+    window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
   }, [appLang, movieNumber]);
   useEffect(() => {
     let request: string = `https://api.themoviedb.org/3/movie/${movieNumber}/credits?api_key=f7d6f68390c266c1854cab96343c8550&language=${appLang}`;
@@ -481,10 +495,10 @@ export const Detail: React.FC = () => {
             <DetailInfo>
               <TitleWrapper>
                 <MovieTitle>{moviedata?.title}</MovieTitle>
-                <Year>({getDate()})</Year>
                 <MovieSlogan>{moviedata?.tagline}</MovieSlogan>
               </TitleWrapper>
               <RateAndTimeWrapper>
+              <Year>{getDate()}</Year>
                 <Time>
                   <TimeIMG viewBox="0 0 465.2 465.2" /> {toHoursAndMinutes()}
                 </Time>
@@ -609,7 +623,7 @@ export const Detail: React.FC = () => {
       </BigCardWrapper>
       <OtherWrapper>
         <ToggleCheckWrapper>
-        <ToggleCheck onClick={toggleCheck}><ToggleCheckIMG viewBox="0 0 122.88 101.78"/></ToggleCheck>
+        <ToggleCheck onClick={toggleCheck}>{otherBTN ?  <ToggleToVideo viewBox="0 0 104 92" /> :  <ToggleToList viewBox="0 0 19 16" />}</ToggleCheck>
         </ToggleCheckWrapper>
         {otherBTN ? (
           <SimilarMovieWrapper>

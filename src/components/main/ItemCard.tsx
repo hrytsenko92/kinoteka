@@ -27,7 +27,7 @@ export const CardWrapper = styled(Link)`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 10fr 1fr 1fr;
-  max-width: 300px;
+  max-width: 360px;
   min-width: 280px;
   box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.3);
   border-radius: 7px;
@@ -40,7 +40,7 @@ export const CardWrapper = styled(Link)`
     
   }
   &:hover, &:link, &:visited, &:active {
-    color: black
+    color: ${(props) => props.theme.textColorOne};
   }
 `;
 export const PosterWrapper = styled.div`
@@ -55,7 +55,7 @@ export const PosterWrapper = styled.div`
 export const Poster = styled.img`
   width: 100%;
   height: 100%;
-  aspect-ratio: 1/1.4;
+  aspect-ratio: 1/1.5;
   position: relative;
   object-fit: cover;
   object-position: center;
@@ -201,13 +201,11 @@ export const ItemCard: React.FC<ItemInfo> = ({
     }
     isWatchlist == true ? getUsers(): isSearch === true ? setMoviedata(completeSearchData): setMoviedata(completeData) ; 
   }, [appLang]);
-  console.log(moviedata?.poster_path)
   return (
     <Container>
-      <CardWrapper to={`/details/${moviedata?.id}`} state={{ movieNumber: moviedata?.id }}>
+      <CardWrapper to={`/id/${moviedata?.id}`} state={{ movieNumber: moviedata?.id }}>
         <PosterWrapper>
           {moviedata?.poster_path !== null ? <Poster src={getPoster(moviedata?.poster_path)} alt=""></Poster> : <PosterLost viewBox="0 0 56 56"/> }
-          
           <PosterBlur />
         </PosterWrapper>
         <Title>{moviedata?.title}</Title>

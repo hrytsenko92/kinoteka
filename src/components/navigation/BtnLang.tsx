@@ -13,6 +13,7 @@ export const Container = styled.div`
 `;
 export const Details = styled.span`
   margin: 0 5px;
+  color: ${(props) => props.theme.textColorOne};
 `;
 export const BtnLang: React.FC = (props) => {
   const [checked, setChecked] = useState(false);
@@ -25,9 +26,9 @@ export const BtnLang: React.FC = (props) => {
   return (
     <Container>
       {checked === false ? (
-        <Details>English</Details>
-      ) : (
         <Details>Ukrainian</Details>
+      ) : (
+        <Details>English</Details>
       )}
       <Switch
         checked={checked}

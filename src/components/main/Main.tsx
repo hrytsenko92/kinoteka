@@ -7,6 +7,7 @@ import { Search } from "./Search";
 import { Detail } from "./Detail";
 import { useAppSelector } from "../../redux/hook";
 import { RootState } from "../../redux/store";
+import { NotFound } from "./NotFound"
 
 export const Container = styled.div`
   position: relative;
@@ -30,6 +31,10 @@ export const Main: React.FC = () => {
       <Routes>
         <Route path="/" element={<ItemList itemLabel={loadSection[0]} />} />
         <Route
+          path="/now_playing"
+          element={<ItemList itemLabel={loadSection[0]} />}
+        />
+        <Route
           path="/popular"
           element={<ItemList itemLabel={loadSection[1]} />}
         />
@@ -46,7 +51,8 @@ export const Main: React.FC = () => {
           element={<Search />}
         />
         <Route path="/watchlist" element={<Watchlist playlistID={playlist} />} />
-        <Route path="/details/:id" element={<Detail />} />
+        <Route path="/id/:id" element={<Detail />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Container>
   );

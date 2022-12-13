@@ -36,7 +36,7 @@ export const LogoWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
-export const LogoItem = styled.div`
+export const LogoItem = styled(MyLogo)`
   width: 75%;
   height: auto;
 `;
@@ -135,17 +135,15 @@ export const Navbar: React.FC<Props> = ({ language }) => {
       }}
     >
       <LogoWrapper>
-        <LogoItem>
-          <MyLogo />
-        </LogoItem>
+        <LogoItem viewBox="0 0 273.42 35.52"/>
       </LogoWrapper>
       <MenuWrapper>
         <MenuItem>
           <NowSvg viewBox="0 0 128 128" />
           {language === "en-US" ? (
-            <LinkItem to="/">Playing</LinkItem>
+            <LinkItem to="/now_playing">Playing</LinkItem>
           ) : (
-            <LinkItem to="/">Дивляться</LinkItem>
+            <LinkItem to="/now_playing">Дивляться</LinkItem>
           )}
         </MenuItem>
         <MenuItem>

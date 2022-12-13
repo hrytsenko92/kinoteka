@@ -13,6 +13,7 @@ export const Container = styled.div`
 `;
 export const Details = styled.span`
   margin: 0 5px;
+  color: ${(props) => props.theme.textColorOne};
 `;
 export const BtnTheme: React.FC = (props) => {
   const [checked, setChecked] = useState(false);
