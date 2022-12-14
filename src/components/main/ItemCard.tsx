@@ -172,8 +172,10 @@ export const ItemCard: React.FC<ItemInfo> = ({
   const handleAdd = () => {
     moviedata?.id !== undefined ? dispatch(add(moviedata.id)) : null;
   };
-  const getPoster = (postpath: string | undefined) => {
-    return `https://image.tmdb.org/t/p/w500/${postpath}`;
+  const getPoster = (poster: string | undefined) => {
+    if (poster !== undefined && poster !== null) {
+      return `https://image.tmdb.org/t/p/w500${poster}`;
+    }
   };
   const voteFix = () => {
     return moviedata?.vote_average.toFixed(1);
@@ -203,7 +205,7 @@ export const ItemCard: React.FC<ItemInfo> = ({
   }, [appLang]);
   return (
     <Container>
-      <CardWrapper to={`/id/${moviedata?.id}`} state={{ movieNumber: moviedata?.id }}>
+      <CardWrapper to={`/${moviedata?.id}`} state={{ movieNumber: moviedata?.id }}>
         <PosterWrapper>
           {moviedata?.poster_path !== null ? <Poster src={getPoster(moviedata?.poster_path)} alt=""></Poster> : <PosterLost viewBox="0 0 56 56"/> }
           <PosterBlur />

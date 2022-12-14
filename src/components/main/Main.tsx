@@ -51,7 +51,7 @@ export const Main: React.FC = () => {
           element={<Search />}
         />
         <Route path="/watchlist" element={<Watchlist playlistID={playlist} />} />
-        <Route path="/id/:id" element={<Detail />} />
+        <Route path="/:id" element={<Detail />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Container>

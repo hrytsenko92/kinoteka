@@ -12,7 +12,6 @@ import { Cast, CastElement } from "../types/Cast";
 import { ItemCard } from "./ItemCard";
 import timeSVG from "../../assets/svg/time.svg";
 import medal from "../../assets/svg/medal.svg";
-import transfer from "../../assets/svg/transfer.svg"
 import toVideo from "../../assets/svg/toVideo.svg"
 import toList from "../../assets/svg/toList.svg"
 
@@ -381,13 +380,19 @@ export const Detail: React.FC = () => {
     setOtherBTN((current) => !current);
   };
   const getPoster = (poster: string | undefined) => {
-    return `https://image.tmdb.org/t/p/w500${poster}`;
+    if (poster !== undefined && poster !== null) {
+      return `https://image.tmdb.org/t/p/w500${poster}`;
+    }
   };
   const getBackdropPath = (backdrop: string | undefined) => {
-    return `https://image.tmdb.org/t/p/original${backdrop}`;
+    if (backdrop !== undefined && backdrop !== null) {
+      return  `https://image.tmdb.org/t/p/original${backdrop}`;
+    }
   };
   const getPhoto = (profile_path: string | null) => {
-    return `https://image.tmdb.org/t/p/w200${profile_path}`;
+    if (profile_path !== undefined && profile_path !== null) {
+      return `https://image.tmdb.org/t/p/w200${profile_path}`;
+    }
   };
   const getDate = () => {
     return moviedata?.release_date !== undefined
@@ -488,10 +493,10 @@ export const Detail: React.FC = () => {
   return (
     <DetailContainer>
       <BigCardWrapper>
-        <BigCardIMG style={{ backgroundImage: `url(${getBackdropPath( moviedata?.backdrop_path )})`, }}/>
+        {moviedata?.backdrop_path !== undefined && moviedata.backdrop_path !== null ?  <BigCardIMG style={{ backgroundImage: `url(${getBackdropPath( moviedata?.backdrop_path )})`, }}/> : null}
         <MovieContainer>
           <MovieWrapper>
-            <PosterIMG style={{ backgroundImage: `url(${getPoster(moviedata?.poster_path)})`,}} />
+            {moviedata?.poster_path !== undefined && moviedata.poster_path !== null ? <PosterIMG style={{ backgroundImage: `url(${getPoster(moviedata?.poster_path)})`,}} /> :null}
             <DetailInfo>
               <TitleWrapper>
                 <MovieTitle>{moviedata?.title}</MovieTitle>
@@ -511,7 +516,7 @@ export const Detail: React.FC = () => {
                 <ActorCard1>
                   <ActorPhoto
                     src={getPhoto(
-                      cast !== undefined ? cast[0].profile_path : null
+                      cast !== undefined && cast[0].profile_path !== undefined ? cast[0].profile_path : null
                     )}
                   />
                   <ActorNameBackground>
@@ -523,7 +528,7 @@ export const Detail: React.FC = () => {
                 <ActorCard2>
                   <ActorPhoto
                     src={getPhoto(
-                      cast !== undefined ? cast[1].profile_path : null
+                      cast !== undefined && cast[1].profile_path !== undefined ? cast[1].profile_path : null
                     )}
                   />
                   <ActorNameBackground>
@@ -535,7 +540,7 @@ export const Detail: React.FC = () => {
                 <ActorCard3>
                   <ActorPhoto
                     src={getPhoto(
-                      cast !== undefined ? cast[2].profile_path : null
+                      cast !== undefined && cast[2].profile_path !== undefined ? cast[2].profile_path : null
                     )}
                   />
                   <ActorNameBackground>
@@ -547,7 +552,7 @@ export const Detail: React.FC = () => {
                 <ActorCard4>
                   <ActorPhoto
                     src={getPhoto(
-                      cast !== undefined ? cast[3].profile_path : null
+                      cast !== undefined && cast[3].profile_path !== undefined ? cast[3].profile_path : null
                     )}
                   />
                   <ActorNameBackground>
@@ -559,7 +564,7 @@ export const Detail: React.FC = () => {
                 <ActorCard5>
                   <ActorPhoto
                     src={getPhoto(
-                      cast !== undefined ? cast[4].profile_path : null
+                      cast !== undefined && cast[4].profile_path !== undefined ? cast[4].profile_path : null
                     )}
                   />
                   <ActorNameBackground>
@@ -571,7 +576,7 @@ export const Detail: React.FC = () => {
                 <ActorCard6>
                   <ActorPhoto
                     src={getPhoto(
-                      cast !== undefined ? cast[5].profile_path : null
+                      cast !== undefined && cast[5].profile_path !== undefined ? cast[5].profile_path : null
                     )}
                   />
                   <ActorNameBackground>
@@ -583,7 +588,7 @@ export const Detail: React.FC = () => {
                 <ActorCard7>
                   <ActorPhoto
                     src={getPhoto(
-                      cast !== undefined ? cast[6].profile_path : null
+                      cast !== undefined && cast[6].profile_path !== undefined ? cast[6].profile_path : null
                     )}
                   />
                   <ActorNameBackground>
@@ -595,7 +600,7 @@ export const Detail: React.FC = () => {
                 <ActorCard8>
                   <ActorPhoto
                     src={getPhoto(
-                      cast !== undefined ? cast[7].profile_path : null
+                      cast !== undefined && cast[7].profile_path !== undefined ? cast[7].profile_path : null
                     )}
                   />
                   <ActorNameBackground>
@@ -607,7 +612,7 @@ export const Detail: React.FC = () => {
                 <ActorCard9>
                   <ActorPhoto
                     src={getPhoto(
-                      cast !== undefined ? cast[8].profile_path : null
+                      cast !== undefined && cast[8].profile_path !== undefined ? cast[8].profile_path : null
                     )}
                   />
                   <ActorNameBackground>
