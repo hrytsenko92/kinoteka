@@ -12,7 +12,7 @@
 
 #### - "cd" into the new folder and type: $ npm install
 
-#### - To run the React project type: $ npm start
+#### - To run the React project type: $ npm run dev-server
 
 
 ### Screenshot
