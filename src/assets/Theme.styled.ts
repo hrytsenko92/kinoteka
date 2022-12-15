@@ -14,7 +14,6 @@ export const lightTheme: themeType = {
   iconColor: "#4B70E2", 
   blurColorOne: "white",
 }
-
 export const darkTheme: themeType = {
   background: "#1F1E1E",
   textColorOne: "#FFFFFF",
@@ -23,8 +22,6 @@ export const darkTheme: themeType = {
   iconColor: "#D01E1E",
   blurColorOne: "black",
 }
-
-
 export type sizesAndDeviceType = {
   mobile: string;
     tablet: string;
@@ -39,7 +36,6 @@ export const sizes: sizesAndDeviceType = {
   laptopL: "1760px",
   desktop: "1920px",
 };
-
 export const devices: sizesAndDeviceType = {
   mobile: `(min-width: ${sizes.mobile})`,
   tablet: `(min-width: ${sizes.tablet})`,
@@ -47,6 +43,3 @@ export const devices: sizesAndDeviceType = {
   laptopL: `(min-width: ${sizes.laptopL})`,
   desktop: `(min-width: ${sizes.desktop})`,
 };
-
-
-
